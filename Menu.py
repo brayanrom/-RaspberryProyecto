@@ -13,7 +13,7 @@ class Menu:
 
     def menuPR(self):
         while True:
-                print("1.- Obtener material")
+                print("1.- Obtener datos")
                 print("2.- Devolver material")
                 print("3.- Registro de prestamos")
                 print("5.- Configuracion")
@@ -22,7 +22,7 @@ class Menu:
                 print("Seleccione la opcion deseada")
                 opcionint = int(input("-> "))
             #----------------------------------------------------------------------
-                if opcionint==1:               #pedir objetos   Obtener material
+                if opcionint==1:               #Registrar
                     self.limpiar()
                     print("1.- Balon de Futbol")
                     print("2.- Balon de Basquetball")
@@ -45,63 +45,11 @@ class Menu:
                         self.RegistrarArticulo(matricula,articulo,cantidad)
                     elif opc==0:
                         self.limpiar()  
-                        True    
-            #----------------------------------------------------------------------
-                elif opcionint==2:                           #devolver objetos
-                    self.limpiar()
-                    print('Que deseas regresar')
-                    print("1.- Balon de Futbol")
-                    print("2.- Balon de Basquetball")
-                    print("3.- Pelota de tenis")  
-                    print("0.- Salir")  
-                    opc=int(input('->'))
-                    self.limpiar()
-                    tmp=Articulo()
-                    c=1
-                    if opc==1:
-                        print("------------------------------------------------------------------")
-                        print("|N/Pres\t|Matricula\t|Articulo\t\t\t| C/Prestada\t |")
-                        listaA= tmp.VerArticulos()
-                        for articulo in listaA:
-                            if articulo.articulo=="Balon de Futbol":
-                                print("|#"+ str(c)+"\t|"+ articulo.matricula+"\t|"+
-                                articulo.articulo+"\t\t|"+
-                                str(articulo.cantidad)+"\t\t |")
-                        print('')
-                        Menu.eliminar()
-                    elif opc==2:
-                        print("------------------------------------------------------------------")
-                        print("|N/Pres\t|Matricula\t|Articulo\t\t\t| C/Prestada\t |")
-                        listaA= tmp.VerArticulos()
-                        for articulo in listaA:
-                            if articulo.articulo=="Balon de Basquetball":
-                                print("|#"+ str(c)+"\t|"+ articulo.matricula+"\t|"+
-                                articulo.articulo+"\t\t|"+
-                                str(articulo.cantidad)+"\t\t |")
-                        print('')
-                        Menu.eliminar()
-                    elif opc==3:
-                        print("------------------------------------------------------------------")
-                        print("|N/Pres\t|Matricula\t|Articulo\t\t\t| C/Prestada\t |")
-                        listaA= tmp.VerArticulos()
-                        for articulo in listaA:
-                            if articulo.articulo=="Pelota de tenis":
-                                print("|#"+ str(c)+"\t|"+ articulo.matricula+"\t|"+
-                                articulo.articulo+"\t\t|"+
-                                str(articulo.cantidad)+"\t\t |")
-                        print('')
-                        Menu.eliminar()        
-                    elif opc==0:
-                        Menu.limpiar()  
-                        True      
+                        True
             #----------------------------------------------------------------------
                 elif opcionint==3:                 #registro prestamos  txt
                     self.limpiar()
                     self.VerInventario()
-                    print('')
-            #----------------------------------------------------------------------
-                elif opcionint==4:                 #registro prestamos  txt
-                    self.limpiar()
                     print('')
             #----------------------------------------------------------------------
                 elif opcionint==5:                           #configuracion
@@ -192,10 +140,6 @@ class Menu:
             MysqlDatabase.insertarDatos(matricula,articulo,cantidad)
         elif x==2:
             MongoDatabase.insertarDatos(matricula,articulo,cantidad)
-
-
-
-
 
 if __name__ == "__main__":
     x=Menu()
