@@ -1,22 +1,36 @@
 import RPi.GPIO as GPIO
 import time
+import os
 
 class ledConf():
     def __init__(self):
+        self.led=2
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
-        GPIO.setup(3,GPIO.OUT)     #Configura el Pin 3 como salida
+        GPIO.setup(self.led,GPIO.OUT)     #Configura el Pin 26 como salida
+    
+    def limpiar(self):
+        if os.name=="nt":
+            os.system("cls")
+        else:
+            os.system("clear")
 
-    def ledOn():
-        GPIO.output(3,1)   #Salida digital de 5V
-
-    def ledOf():
-        GPIO.output(3,0)   #Apaga el led
-
-    def ledLoop():
-        while True:
-        GPIO.output(3,1)   #Salida digital de 5V
+    def ledOn(self):
+        GPIO.output(self.led,1)   #Salida digital de 5V
         time.sleep(1)      #Delay en segundos
-        GPIO.output(3,0)   #Apaga el led
-        time.sleep(1)      #Delay en segundos
-
+        print("Led encendido")
+    def ledOff(self):
+            GPIO.output(self.led,0)   #Apaga el led
+            time.sleep(1)      #Delay en segundos
+            print("Led apagado")
+    def ledLoop(self):
+        try:
+            while True:
+                GPIO.output(self.led,1)   #Salida digital de 5V
+                time.sleep(1)      #Delay en segundos
+                GPIO.output(self.led,0)   #Apaga el led
+                time.sleep(1)      #Delay en segundos
+        except KeyboardInterrupt:
+            self.limpiar()
+            print("Proceso detenido por el usuario")
+            GPIO.cleanup()
