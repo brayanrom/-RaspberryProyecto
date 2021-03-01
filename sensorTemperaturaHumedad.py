@@ -5,12 +5,12 @@ import time
 import datetime
 
 class sensorTemperatura():
-        
-    def sensorTemp(self,individual=0):
+    def __init__(self):
         GPIO.cleanup()
         GPIO.setwarnings(True)
         GPIO.setmode(GPIO.BCM)
 
+    def sensorTemp(self,individual=0):
         instance = dht11.DHT11(pin=23)
 
         result = instance.read()
@@ -20,13 +20,13 @@ class sensorTemperatura():
         print("Temperatura: " +str(resultTemp))
         print("Humedad: " +str(resultHumed))
         
-            
         if individual==1:
             dato = {"resultTemp": resultTemp, "resultHumed":resultHumed}
 
             x=saveCSV()
             x.insertSensorIndividual(dato,3)
             return 
+
         return resultTemp,resultHumed
 
 

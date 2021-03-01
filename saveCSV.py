@@ -85,7 +85,6 @@ class saveCSV():
 
         tabla = "historial"
 
-
         dbMysql.insert(tabla, valores)
         dbMysql.select(tabla)
 

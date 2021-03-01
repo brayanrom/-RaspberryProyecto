@@ -1,19 +1,18 @@
 import mysql.connector as mysql
-mydb = mysql.connect(
-    host="localhost",
-    user="root",
-    password="1234",
-    database="IoT"
-    )
-print(mydb)
-mycursor = mydb.cursor()
-
-
 class DatabaseMysql:
+    def __init__(self):
+        self.mydb = mysql.connect(
+            host="localhost",
+            user="root",
+            password="1234",
+            database="IoT"
+            )
+        print(self.mydb)
+        self.mycursor = self.mydb.cursor()
 
     def all(self):
-        mycursor.execute("SHOW DATABASES")
-        for x in mycursor:
+        self.mycursor.execute("SHOW DATABASES")
+        for x in self.mycursor:
             print(x)
     
     def insert(self, tabla, valores):
@@ -21,12 +20,12 @@ class DatabaseMysql:
         h = valores.get('humedad')
         p = valores.get('pir')
         d = valores.get('distancia')
-        mycursor.execute('INSERT INTO %s (sensTemp, sensHumed, sensPir, sensDistancia) values ("%s", "%s", "%s", "%s")' % (tabla, t, h, p, d))
-        mydb.commit()   
+        self.mycursor.execute('INSERT INTO %s (sensTemp, sensHumed, sensPir, sensDistancia) values ("%s", "%s", "%s", "%s")' % (tabla, t, h, p, d))
+        self.mydb.commit()   
   
     def select(self, tabla):
-        mycursor.execute('SELECT * FROM %s' % (tabla))
-        myresult = mycursor.fetchall()
+        self.mycursor.execute('SELECT * FROM %s' % (tabla))
+        myresult = self.mycursor.fetchall()
         for x in myresult:
             print(x)
         
@@ -34,8 +33,8 @@ class DatabaseMysql:
         for clave, x in valores.items():  
             columna = clave
         valor = valores.get(col)
-        mycursor.execute('DELETE FROM %s where %s = "%s"' % (tabla, columna , valor))
-        mydb.commit()     
+        self.mycursor.execute('DELETE FROM %s where %s = "%s"' % (tabla, columna , valor))
+        self.mydb.commit()     
         
 
 
