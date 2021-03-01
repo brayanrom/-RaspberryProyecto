@@ -1,12 +1,16 @@
-from led import ledConf
-from sensorDistancia import SensorDistancia
 from Pir import sensorPir
+from led import ledConf
+from senDistancia import SensorDistancia
+from saveCSV import saveCSV
+from sensorTemperaturaHumedad import sensorTemperatura
 import os
+import time
 
 class Menus:
     def __init__(self):
         print("Seleccione su tiempo a guardar datos")
         self.tiempo=int(input())
+        self.limpiar()
 
 
     def limpiar(self):
@@ -21,7 +25,9 @@ class Menus:
             print("2.- Enceder y Apagar Led")
             print("3.- Detectar presencia con sensor PIR")
             print("4.- Temperatura y humedad")
-            print("5.- Configuracion")
+            print("5.- Leer todos los sensores")
+
+            print("10.- Configuracion")
             print("  ")
             print("  ")
 
@@ -30,6 +36,9 @@ class Menus:
             if opc == "1":
                 distancia=SensorDistancia()
                 distancia.leerDistancia(self.tiempo)
+                print("  ")
+                print("  ")
+
 
             if opc == "2":
                 self.limpiar()
@@ -48,13 +57,54 @@ class Menus:
                 if opc2 == "3":
                     led.ledLoop()
 
+
             if opc == "3":
                 x=sensorPir()
                 x.leerMovimiento(self.tiempo)
                 print("  ")
                 print("  ")
 
+            if opc == "4":
+                tempSens=sensorTemperatura()
+                tempSens.temperatura(self.tiempo)
+                print("  ")
+                print("  ")
+
+
+
             if opc == "5":
+                try:
+                    while True:
+                        distancia=SensorDistancia()
+                        wardDist=distancia.distance()
+
+                        pir=sensorPir()
+                        wardPir=pir.leerMov()
+
+                        senTempHumed=sensorTemperatura()
+                        wardTempHumed=senTempHumed.sensorTemp()
+
+                        x=saveCSV()
+                        x.postPersona(str(wardDist),str(wardPir),str(wardTempHumed))
+
+
+                        time.sleep(self.tiempo)
+                        self.limpiar()
+
+                # Reset by pressing CTRL + C
+                except KeyboardInterrupt:
+                    self.limpiar()
+                    print("Proceso detenido por el usuario")
+                    print("  ")
+                    print("  ")
+
+
+
+
+
+
+
+            if opc == "10":
                 self.limpiar()
                 print("1.-Modificar tiempo de subida de datos (Sensores)")
                 print("2.-Mostrar tiempo a guardar datos")
@@ -73,13 +123,3 @@ class Menus:
                     print(str(self.tiempo) +" Segundos")
                     print("  ")
                     print("  ")
-
-    def RegistrarArticulo(self,matricula,articulo,cantidad):
-        tmp=Articulo()
-        tmp.RegistroArticulo(matricula,articulo,cantidad)
-
-        x=int(self.dbActual)
-        if x==1:
-            MysqlDatabase.insertarDatos(matricula,articulo,cantidad)
-        elif x==2:
-            MongoDatabase.insertarDatos(matricula,articulo,cantidad)

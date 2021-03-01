@@ -1,12 +1,44 @@
-import Adafruit_DHT
+import RPi.GPIO as GPIO
+from saveCSV import saveCSV
+import dht11
 import time
+import datetime
 
-while True:
-  sensor = Adafruit_DHT.DHT11 #Cambia por DHT22 y si usas dicho sensor
-  pin = 6 #Pin en la raspberry donde conectamos el sensor
-  humedad, temperatura = Adafruit_DHT.read_retry(sensor, pin)
+class sensorTemperatura():
+    def __init__(self):
+        GPIO.cleanup()
 
-  print ('Humedad: ' , humedad)
-  print ('Temperatura: ' , temperatura)
+    def sensorTemp(self,individual=0):
+        GPIO.setwarnings(True)
+        GPIO.setmode(GPIO.BCM)
 
-  time.sleep(1) #Cada segundo se evalúa el sensor
+        instance = dht11.DHT11(pin=23)
+
+        result = instance.read()
+        if result.is_valid():
+            resultTemp= round(result.temperature,2)
+            resultHumed= round(result.humidity,2)
+
+            print("Temperatura: " +str(resultTemp))
+            print("Humedad: " +str(resultHumed))
+        
+            retornarDatos = str(resultTemp)+","+str(resultHumed)
+            
+            if individual==1:
+                x=saveCSV()
+                x.insertSensorIndividual(retornarDatos,3)
+
+            return (retornarDatos)
+
+
+
+    def temperatura(self,tiempo):
+        individual=1
+        try:
+            while True:
+                self.sensorTemp(individual)
+                time.sleep(tiempo)
+
+        except KeyboardInterrupt:
+            print("Saliendo :)")
+            GPIO.cleanup()
