@@ -5,7 +5,7 @@ import time
 
 
 
-class Database:
+class DatabaseMongoDB:
 
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://maria:MariOli2005@sandbox.sn9l7.mongodb.net/IoT?retryWrites=true&w=majority")

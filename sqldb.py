@@ -3,7 +3,7 @@ from datetime import date
 import time
 
 
-class Database:
+class DatabaseSQLDB:
 
     def __init__(self):
         self.mydb = mysql.connect(
