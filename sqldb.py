@@ -1,7 +1,9 @@
 import mysql.connector as mysql
+from CheckTypeValues import CheckTypeValues
 from datetime import date
 import time
 
+ctv = CheckTypeValues()
 
 class DatabaseSQLDB:
 
@@ -32,13 +34,22 @@ class DatabaseSQLDB:
             self.mydb.commit()
         elif tabla == "historial":
             s = valores.get('sensor_id')
-            val_int = valores.get('valor_int')
-            val_dec = valores.get('valor_dec')
-            val_str = valores.get('valor_str')
-            val_bool = valores.get('valor_bool')
+            val = valores.get('valor')
             fecha_tiempo = valores.get('fecha_tiempo')
-            self.mycursor.execute('INSERT INTO %s (sensor_id, valor_int, valor_dec, valor_str, valor_bool, fecha_tiempo) values ("%s", "%s", "%s", "%s", "%s", "%s")' % (tabla, s, val_int, val_dec, val_str, val_bool, fecha_tiempo))
-            self.mydb.commit()
+            if ctv.isInt(val):
+                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_int, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mydb.commit()
+            elif ctv.isFloat(val):
+                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_dec, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mydb.commit()
+            elif ctv.isString(val):
+                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_str, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mydb.commit()
+            elif ctv.isNumericBool(val):
+                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_bool, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mydb.commit()
+            else:
+                print("El valor recibido no es valido")
         
     def select(self, tabla):
         self.mycursor.execute('SELECT * FROM %s' % (tabla))
@@ -54,6 +65,25 @@ class DatabaseSQLDB:
         self.mydb.commit()     
         
 
+
+
+
+''' EJEMPLO DE INSERCION
+db = DatabaseSQLDB()
+
+db.all()
+
+
+today = date.today()
+time = time.strftime("%H:%M:%S")
+fecha = str(today) + ' ' + str(time)
+print(fecha)
+
+tabla = "historial"
+valores = {"sensor_id":1, "valor":1, "fecha_tiempo":fecha}
+
+db.insert(tabla, valores)
+db.select(tabla) '''
 
 
 
@@ -93,3 +123,5 @@ class DatabaseSQLDB:
 # valores = {"sensor_id":1}
 # db.delete(tabla, valores)
 # db.select(tabla)  
+
+
