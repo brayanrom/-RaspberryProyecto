@@ -23,6 +23,7 @@ class Menus:
         try:
 
             while True:
+                print("0.- Resgistrar sensor")
                 print("1.- Leer Distancia (Sensor ultrasonico)")
                 print("2.- Enceder y Apagar Led")
                 print("3.- Detectar presencia con sensor PIR")
