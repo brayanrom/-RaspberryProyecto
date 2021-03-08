@@ -17,7 +17,7 @@ class SensorDistancia():
         self.limpiar()
         GPIO.setmode(GPIO.BCM)
 
-        self.GPIO_ECHO=pinEntrada.get("GPIO_TRIGGER")
+        self.GPIO_TRIGGER=pinEntrada.get("GPIO_TRIGGER")
         self.GPIO_ECHO=pinEntrada.get("GPIO_ECHO")
 
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)
@@ -53,10 +53,10 @@ class SensorDistancia():
         return ditsFinal
 
 
-    def leerDistancia(self,tiempo):
+    def leerDistancia(self,tiempo,pinEntrada):
         try:
             while True:
-                dist=SensorDistancia()
+                dist=SensorDistancia(pinEntrada)
                 wardPir=dist.distance()
 
                 x=saveCSV()

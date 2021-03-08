@@ -1,9 +1,13 @@
-from sqldb import DatabaseMysql
+from sqldb import DatabaseSQLDB
 from mongodb import DatabaseMongoDB
 class saveCSV():
+    def __init__(self):
+        #cambiar este valor a True cuando se realicen pruebas
+        #esto hara que no se envien datos a las BD's
+        self.modoPrueba=True
 
         #insercion de los datos en bucle
-    def postPersona(self,dato1="NULL",dato2="NULL",dato3="NULL",dato4="NULL",prueba==True):
+    def postPersona(self,dato1="NULL",dato2="NULL",dato3="NULL",dato4="NULL"):
 
         archivo = open("sensores.csv", "a")
 
@@ -21,35 +25,13 @@ class saveCSV():
         archivo.write("\n")
         archivo.close()
 
+        valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
 
-
-        if prueba==True
-            valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
+        if self.modoPrueba==False:
             self.guardarDatos(valores)
 
 
-
-    def guardarDatos(self,valores):
-            dbMysql = DatabaseMysql()
-            dbMongo = DatabaseMongoDB()
-            tabla = "historial"
-
-            dato3=pinEntrada.get("temperatura")
-            dato4=pinEntrada.get("humedad")
-            dato2=pinEntrada.get("pir")
-            dato1=pinEntrada.get("distancia")
-
-            valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
-
-
-            dbMysql.insert(tabla, valores)
-            dbMysql.select(tabla)
-
-            dbMongo.insert(tabla, valores)
-            dbMongo.select(tabla)
-
-
-    def insertSensorIndividual(self,dato,sensorTipo=0,prueba==True):
+    def insertSensorIndividual(self,dato,sensorTipo=0):
         datoNulo="NULL" 
 
         archivo = open("sensores.csv", "a")
@@ -59,7 +41,6 @@ class saveCSV():
             archivo.write(dato)
             archivo.write(", NULL,NULL, NULL")   
             valores = {"temperatura": datoNulo, "humedad":datoNulo, "pir":datoNulo, "distancia":dato}
-
 
         #2 es pir
         if sensorTipo==2:
@@ -86,6 +67,29 @@ class saveCSV():
         archivo.close()
 
 
-        if prueba==True
-            valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
+        if self.modoPrueba==False:
             self.guardarDatos(valores)
+
+
+
+
+
+#donde se guardaran los datos en las BD's
+    def guardarDatos(self,pinEntrada):
+            dbMysql = DatabaseSQLDB()
+            dbMongo = DatabaseMongoDB()
+            tabla = "historial"
+
+            dato3=pinEntrada.get("temperatura")
+            dato4=pinEntrada.get("humedad")
+            dato2=pinEntrada.get("pir")
+            dato1=pinEntrada.get("distancia")
+
+            valoresBD = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
+
+
+            dbMysql.insert(tabla, valoresBD)
+            dbMysql.select(tabla)
+
+            dbMongo.insert(tabla, valoresBD)
+            dbMongo.select(tabla)

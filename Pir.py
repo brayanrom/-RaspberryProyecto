@@ -35,10 +35,10 @@ class sensorPir():
         return i
 
 
-    def leerMovimiento(self,tiempo):
+    def leerMovimiento(self,tiempo,pinEntrada):
         try:
             while True:
-                mov=sensorPir()
+                mov=sensorPir(pinEntrada)
                 wardPir=mov.leerMov()
 
                 x=saveCSV()

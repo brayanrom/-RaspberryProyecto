@@ -47,7 +47,7 @@ class Menus:
                 if opc == "1":
                     pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, "GPIO_ECHO":self.GPIO_ECHO}
                     distancia=SensorDistancia(pinEntrada)
-                    distancia.leerDistancia(self.tiempo)
+                    distancia.leerDistancia(self.tiempo,pinEntrada)
                     print("  ")
                     print("  ")
 
@@ -75,7 +75,7 @@ class Menus:
                     pinEntrada={"led":self.led, "pir":self.pir}
 
                     x=sensorPir(pinEntrada)
-                    x.leerMovimiento(self.tiempo)
+                    x.leerMovimiento(self.tiempo,pinEntrada)
                     print("  ")
                     print("  ")
 
@@ -83,7 +83,7 @@ class Menus:
                     pinEntrada={"TemperaturaHumedad":self.temperatura}
                     
                     tempSens=sensorTemperatura(pinEntrada)
-                    tempSens.temperatura(self.tiempo)
+                    tempSens.temperatura(self.tiempo,pinEntrada)
                     print("  ")
                     print("  ")
 
@@ -93,17 +93,22 @@ class Menus:
                     try:
                         while True:
 
-                            pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, "GPIO_ECHO":self.GPIO_ECHO,"led":self.led, "pir":self.pir}
+                            pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, 
+                            "GPIO_ECHO":self.GPIO_ECHO,
+                            "led":self.led, 
+                            "pir":self.pir,
+                            "TemperaturaHumedad":self.temperatura}
                             
 
-                            distancia=SensorDistancia()
+                            distancia=SensorDistancia(pinEntrada)
                             wardDist=distancia.distance()
 
-                            pir=sensorPir()
+                            pir=sensorPir(pinEntrada)
                             wardPir=pir.leerMov()
 
-                            senTempHumed=sensorTemperatura()
-                            wardTemp,wardHumed=senTempHumed.sensorTemp()
+                            temp=sensorTemperatura(pinEntrada)
+                            wardTemp,wardHumed=temp.sensorTemp()
+
 
                             x=saveCSV()
                             x.postPersona(str(wardDist),str(wardPir),str(wardTemp),str(wardHumed))

@@ -6,46 +6,44 @@ import datetime
 
 class sensorTemperatura():
     def __init__(self,pinEntrada):
-        tempHumedadEntrada=pinEntrada.get("TemperaturaHumedad")
+        self.tempHumedadEntrada=pinEntrada.get("TemperaturaHumedad")
         GPIO.cleanup()
-        GPIO.setwarnings(True)
+        GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
-        self.instance = dht11.DHT11(tempHumedadEntrada)
 
 
-    def sensorTemp(self,individual=0):
+    def sensorTemp(self):
+        instance = dht11.DHT11(self.tempHumedadEntrada)
+        result = instance.read()
+        nVeces=0
+        while True:
+            if result.is_valid():
+                resultTemp= round(result.temperature,2)
+                resultHumed= round(result.humidity,2)
 
-        result = self.instance.read()
+                print("Temperatura: " +str(resultTemp))
+                print("Humedad: " +str(resultHumed))
 
-        nVerifica=1
-        while nVerifica<10:
-            if result.is_valid()
-            resultTemp= round(result.temperature,2)
-            resultHumed= round(result.humidity,2)
-            break
-        nVerifica+=1
-
-
-
-        print("Temperatura: " +str(resultTemp))
-        print("Humedad: " +str(resultHumed))
-        
-        if individual==1:
-            dato = {"resultTemp": resultTemp, "resultHumed":resultHumed}
-
-            x=saveCSV()
-            x.insertSensorIndividual(dato,3)
-            return 
-
-        return resultTemp,resultHumed
+                return resultTemp,resultHumed
+            else:
+                nVeces+=1
+                if nVeces==10:
+                    break
+        return 0,0
 
 
-
-    def temperatura(self,tiempo):
-        individual=1
+    def temperatura(self,tiempo,pinEntrada):
         try:
             while True:
-                self.sensorTemp(individual)
+                temp=sensorTemperatura(pinEntrada)
+                resultTemp,resultHumed=temp.sensorTemp()
+
+                dato = {"resultTemp": resultTemp, "resultHumed":resultHumed}
+
+                x=saveCSV()
+                x.insertSensorIndividual(dato,3)
+
+
                 time.sleep(tiempo)
 
         except KeyboardInterrupt:
