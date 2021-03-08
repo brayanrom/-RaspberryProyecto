@@ -5,10 +5,14 @@ from saveCSV import saveCSV
 
 #este sensor usa 5V
 class sensorPir():
-    def __init__(self):
+    def __init__(self,pinEntrada):
+        
+        ledEntrada=pinEntrada.get("led")
+        pirEntrada=pinEntrada.get("pir")
+
         GPIO.cleanup()
-        self.led=2
-        self.pir=27
+        self.led=ledEntrada
+        self.pir=pirEntrada
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pir, GPIO.IN)     

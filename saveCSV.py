@@ -3,7 +3,7 @@ from mongodb import DatabaseMongoDB
 class saveCSV():
 
         #insercion de los datos en bucle
-    def postPersona(self,dato1="NULL",dato2="NULL",dato3="NULL",dato4="NULL"):
+    def postPersona(self,dato1="NULL",dato2="NULL",dato3="NULL",dato4="NULL",prueba==True):
 
         archivo = open("sensores.csv", "a")
 
@@ -23,25 +23,33 @@ class saveCSV():
 
 
 
-
-        dbMysql = DatabaseMysql()
-        dbMongo = DatabaseMongoDB()
-
-        tabla = "historial"
-        valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
-
-
-        dbMysql.insert(tabla, valores)
-        dbMysql.select(tabla)
-
-        dbMongo.insert(tabla, valores)
-        dbMongo.select(tabla)
+        if prueba==True
+            valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
+            self.guardarDatos(valores)
 
 
 
+    def guardarDatos(self,valores):
+            dbMysql = DatabaseMysql()
+            dbMongo = DatabaseMongoDB()
+            tabla = "historial"
+
+            dato3=pinEntrada.get("temperatura")
+            dato4=pinEntrada.get("humedad")
+            dato2=pinEntrada.get("pir")
+            dato1=pinEntrada.get("distancia")
+
+            valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
 
 
-    def insertSensorIndividual(self,dato,sensorTipo=0):
+            dbMysql.insert(tabla, valores)
+            dbMysql.select(tabla)
+
+            dbMongo.insert(tabla, valores)
+            dbMongo.select(tabla)
+
+
+    def insertSensorIndividual(self,dato,sensorTipo=0,prueba==True):
         datoNulo="NULL" 
 
         archivo = open("sensores.csv", "a")
@@ -78,15 +86,6 @@ class saveCSV():
         archivo.close()
 
 
-
-
-        dbMysql = DatabaseMysql()
-        dbMongo = DatabaseMongoDB()
-
-        tabla = "historial"
-
-        dbMysql.insert(tabla, valores)
-        dbMysql.select(tabla)
-
-        dbMongo.insert(tabla, valores)
-        dbMongo.select(tabla)
+        if prueba==True
+            valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
+            self.guardarDatos(valores)

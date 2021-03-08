@@ -3,8 +3,8 @@ import time
 import os
 
 class ledConf():
-    def __init__(self):
-        self.led=2
+    def __init__(self,pinEntrada):
+        self.led=pinEntrada.get("led")
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(self.led,GPIO.OUT)     #Configura el Pin 26 como salida

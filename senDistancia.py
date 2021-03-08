@@ -11,12 +11,15 @@ class SensorDistancia():
         else:
             os.system("clear")
 
-    def __init__(self):
+    def __init__(self,pinEntrada):
+
         GPIO.cleanup()
         self.limpiar()
         GPIO.setmode(GPIO.BCM)
-        self.GPIO_TRIGGER = 3
-        self.GPIO_ECHO = 4
+
+        self.GPIO_ECHO=pinEntrada.get("GPIO_TRIGGER")
+        self.GPIO_ECHO=pinEntrada.get("GPIO_ECHO")
+
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)
 

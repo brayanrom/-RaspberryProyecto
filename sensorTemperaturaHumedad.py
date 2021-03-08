@@ -5,17 +5,27 @@ import time
 import datetime
 
 class sensorTemperatura():
-    def __init__(self):
+    def __init__(self,pinEntrada):
+        tempHumedadEntrada=pinEntrada.get("TemperaturaHumedad")
         GPIO.cleanup()
         GPIO.setwarnings(True)
         GPIO.setmode(GPIO.BCM)
+        self.instance = dht11.DHT11(tempHumedadEntrada)
+
 
     def sensorTemp(self,individual=0):
-        instance = dht11.DHT11(pin=23)
 
-        result = instance.read()
-        resultTemp= round(result.temperature,2)
-        resultHumed= round(result.humidity,2)
+        result = self.instance.read()
+
+        nVerifica=1
+        while nVerifica<10:
+            if result.is_valid()
+            resultTemp= round(result.temperature,2)
+            resultHumed= round(result.humidity,2)
+            break
+        nVerifica+=1
+
+
 
         print("Temperatura: " +str(resultTemp))
         print("Humedad: " +str(resultHumed))

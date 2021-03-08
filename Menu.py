@@ -12,6 +12,14 @@ class Menus:
         self.tiempo=int(input())
         self.limpiar()
 
+        self.led=2
+        self.pir=27
+        
+        self.temperatura=23
+
+        self.GPIO_TRIGGER=3
+        self.GPIO_ECHO=4
+
 
     def limpiar(self):
         if os.name=="nt":
@@ -37,7 +45,8 @@ class Menus:
                 opc = input()
 
                 if opc == "1":
-                    distancia=SensorDistancia()
+                    pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, "GPIO_ECHO":self.GPIO_ECHO}
+                    distancia=SensorDistancia(pinEntrada)
                     distancia.leerDistancia(self.tiempo)
                     print("  ")
                     print("  ")
@@ -45,7 +54,8 @@ class Menus:
 
                 if opc == "2":
                     self.limpiar()
-                    led = ledConf()
+                    pinEntrada={"led":self.led}
+                    led = ledConf(pinEntrada)
                     print("1.-Encender Led")
                     print("2.-Apagar Led")
                     print("3.-Led Loop")
@@ -62,13 +72,17 @@ class Menus:
 
 
                 if opc == "3":
-                    x=sensorPir()
+                    pinEntrada={"led":self.led, "pir":self.pir}
+
+                    x=sensorPir(pinEntrada)
                     x.leerMovimiento(self.tiempo)
                     print("  ")
                     print("  ")
 
                 if opc == "4":
-                    tempSens=sensorTemperatura()
+                    pinEntrada={"TemperaturaHumedad":self.temperatura}
+                    
+                    tempSens=sensorTemperatura(pinEntrada)
                     tempSens.temperatura(self.tiempo)
                     print("  ")
                     print("  ")
@@ -78,6 +92,10 @@ class Menus:
                 if opc == "5":
                     try:
                         while True:
+
+                            pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, "GPIO_ECHO":self.GPIO_ECHO,"led":self.led, "pir":self.pir}
+                            
+
                             distancia=SensorDistancia()
                             wardDist=distancia.distance()
 
