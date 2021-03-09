@@ -29,7 +29,6 @@ class Menus:
 
     def menuPR(self):
         try:
-
             while True:
                 print("0.- Resgistrar sensor")
                 print("1.- Leer Distancia (Sensor ultrasonico)")
