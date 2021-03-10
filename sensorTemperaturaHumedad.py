@@ -34,21 +34,9 @@ class sensorTemperatura():
         return 0,0
 
 
-    def temperatura(self,tiempo,pinEntrada):
-        try:
-            while True:
-#                temp=sensorTemperatura(pinEntrada)
-#                resultTemp,resultHumed=temp.sensorTemp()
-                resultTemp,resultHumed=self.sensorTemp()
-
-                dato = {"resultTemp": resultTemp, "resultHumed":resultHumed}
-
-                x=saveCSV()
-                x.insertSensorIndividual(dato,3,self.Nombre)
-
-
-                time.sleep(tiempo)
-
-        except KeyboardInterrupt:
-            print("Saliendo :)")
-            GPIO.cleanup()
+    def temperatura(self,tiempo):
+        resultTemp,resultHumed=self.sensorTemp()
+        dato = {"resultTemp": resultTemp, "resultHumed":resultHumed}
+        x=saveCSV()
+        x.insertSensorIndividual(dato,3,self.Nombre)
+        time.sleep(tiempo)

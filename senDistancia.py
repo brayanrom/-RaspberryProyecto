@@ -8,7 +8,6 @@ class SensorDistancia():
     def __init__(self,pinEntrada):
 
         GPIO.cleanup()
-        self.limpiar()
         GPIO.setmode(GPIO.BCM)
 
         self.GPIO_TRIGGER=pinEntrada.get("GPIO_TRIGGER")
@@ -18,14 +17,7 @@ class SensorDistancia():
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)
 
-    def limpiar(self):
-        if os.name=="nt":
-            os.system("cls")
-        else:
-            os.system("clear")
-
     def distance(self):
-        self.limpiar()
         GPIO.output(self.GPIO_TRIGGER, True)
         # set Trigger after 0.01ms to LOW
         time.sleep(0.00001)
@@ -54,23 +46,13 @@ class SensorDistancia():
         return ditsFinal
 
 
-    def leerDistancia(self,tiempo,pinEntrada):
+    def leerDistancia(self,tiempo):
 #    def leerDistancia(self,tiempo,pinEntrada):
-
-        try:
-            while True:
 #                dist=SensorDistancia(pinEntrada)
 #                wardPir=dist.distance()
-                wardPir=self.distance()
+        wardPir=self.distance()
 
-                x=saveCSV()
-                x.insertSensorIndividual(str(wardPir),1,self.Nombre)
+        x=saveCSV()
+        x.insertSensorIndividual(str(wardPir),1,self.Nombre)
 
-                time.sleep(tiempo)
-
-        # Reset by pressing CTRL + C
-        except KeyboardInterrupt:
-            self.limpiar()
-            print("Proceso detenido por el usuario")
-            GPIO.cleanup()
-
+        time.sleep(tiempo)

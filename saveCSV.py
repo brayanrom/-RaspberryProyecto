@@ -36,6 +36,7 @@ class saveCSV():
 
         archivo = open("sensores.csv", "a")
         archivo.write(nombreSensor)
+        archivo.write(",")
 
         
         

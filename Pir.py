@@ -36,18 +36,8 @@ class sensorPir():
 
 
     def leerMovimiento(self,tiempo,pinEntrada):
-        try:
-            while True:
-                mov=sensorPir(pinEntrada)
-                wardPir=mov.leerMov()
-
-                x=saveCSV()
-                x.insertSensorIndividual(str(wardPir),2,self.Nombre)
-
-                time.sleep(tiempo)
-
-                # Reset by pressing CTRL + C
-        except KeyboardInterrupt:
-            self.limpiar()
-            print("Proceso detenido por el usuario")
-            GPIO.cleanup()
+        mov=sensorPir(pinEntrada)
+        wardPir=mov.leerMov()
+        x=saveCSV()
+        x.insertSensorIndividual(str(wardPir),2,self.Nombre)
+        time.sleep(tiempo)
