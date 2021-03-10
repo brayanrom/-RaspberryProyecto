@@ -39,5 +39,5 @@ class sensorPir():
         mov=sensorPir(pinEntrada)
         wardPir=mov.leerMov()
         x=saveCSV()
-        x.insertSensorIndividual(str(wardPir),2,self.Nombre)
+        x.insertSensorIndividual(str(wardPir),7,self.Nombre)
         time.sleep(tiempo)

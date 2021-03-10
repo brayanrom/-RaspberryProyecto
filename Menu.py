@@ -3,30 +3,33 @@ from led import ledConf
 from senDistancia import SensorDistancia
 from saveCSV import saveCSV
 from sensorTemperaturaHumedad import sensorTemperatura
+from mongodb import DatabaseMongoDB
 import os
 import time
+from datetime import date
+from sqldb import DatabaseSQLDB
 
 class Menus:
     def __init__(self):
         self.sensores = {
             "sensor_Distancia" : {
-                "dist1" : {
+                6 : {
                     "Pin1":3,
                     "Pin2":4
                 }
             },
             "sensor_Pir" : {
-                "pir1" : {
+                7 : {
                     "Pin1":27
                 }
             },
             "sensor_TempHum" : {
-                "temhum1" : {
+                8 : {
                     "Pin1":23                
                 }
             },
             "sensor_Led" : {
-                "led1" : {
+                9 : {
                     "Pin1":2                
                 }
             }
@@ -93,8 +96,15 @@ class Menus:
         print("")
         print("")
         print("")
-
-
+        db = DatabaseSQLDB()
+        today = date.today()
+        ti = time.strftime("%H:%M:%S")
+        #time = time.strftime("%H:%M:%S")
+        fecha = str(today) + ' ' + str(ti)
+        tabla = "sensores_registrados"
+        valores = {"nombre":nombre_sensor, "tipo_id":SensorTipo, "fecha_tiempo":fecha}
+        db.insert(tabla, valores )
+        db.select(tabla)
 
     def pirMetodo(self):
         for x in self.sensores["sensor_Pir"]:
@@ -160,7 +170,7 @@ class Menus:
         for x in self.sensores["sensor_TempHum"]:
             print(" ")
             pin1=self.sensores["sensor_TempHum"][x]["Pin1"]
-            pinEntrada={"Nombre":x,"TemperaturaHumedad":pin1}
+            pinEntrada={"Id_sensor":x,"TemperaturaHumedad":pin1}
 
             #aqui se imprime los pines de los sensores
             print("Nombre del sensor: "+str(x))#este imprime el nombre del sensor

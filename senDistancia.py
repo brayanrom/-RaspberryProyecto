@@ -47,12 +47,8 @@ class SensorDistancia():
 
 
     def leerDistancia(self,tiempo):
-#    def leerDistancia(self,tiempo,pinEntrada):
-#                dist=SensorDistancia(pinEntrada)
-#                wardPir=dist.distance()
-        wardPir=self.distance()
-
+        wardDist=self.distance()
         x=saveCSV()
-        x.insertSensorIndividual(str(wardPir),1,self.Nombre)
+        x.insertSensorIndividual(wardDist,6,self.Nombre)
 
         time.sleep(tiempo)

@@ -11,7 +11,7 @@ class DatabaseSQLDB:
         self.mydb = mysql.connect(
             host="localhost",
             user="root",
-            password="",
+            password="rasp",
             database="IoT"
             )
         print(self.mydb)
