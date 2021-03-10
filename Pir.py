@@ -7,16 +7,16 @@ from saveCSV import saveCSV
 class sensorPir():
     def __init__(self,pinEntrada):
         
-        ledEntrada=pinEntrada.get("led")
-        pirEntrada=pinEntrada.get("pir")
+        #ledEntrada=pinEntrada.get("led")
+        self.pir=pinEntrada.get("pir")
+        self.Nombre=pinEntrada.get("Nombre")
 
         GPIO.cleanup()
-        self.led=ledEntrada
-        self.pir=pirEntrada
+        #self.led=ledEntrada
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pir, GPIO.IN)     
-        GPIO.setup(self.led, GPIO.OUT) 
+        #GPIO.setup(self.led, GPIO.OUT) 
 
     def limpiar(self):
         if os.name=="nt":
@@ -28,10 +28,10 @@ class sensorPir():
         i=GPIO.input(self.pir)
         if i==0:                 #When output from motion sensor is LOW
             print ("Movimiento No detectado")
-            GPIO.output(self.led, 0)  #Turn OFF LED
+            #GPIO.output(self.led, 0)  #Turn OFF LED
         elif i==1:               #When output from motion sensor is HIGH
             print ("Movimiento detectado")
-            GPIO.output(self.led, 1)  #Turn ON LED
+            #GPIO.output(self.led, 1)  #Turn ON LED
         return i
 
 
@@ -42,7 +42,7 @@ class sensorPir():
                 wardPir=mov.leerMov()
 
                 x=saveCSV()
-                x.insertSensorIndividual(str(wardPir),2)
+                x.insertSensorIndividual(str(wardPir),2,self.Nombre)
 
                 time.sleep(tiempo)
 

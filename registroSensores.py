@@ -26,42 +26,6 @@ class registro:
             }
         }
 
-    def agregarSensor(self):
-        print("1.-Sensor de distancia: ")
-        print("2.-Sensor pir: ")
-        print("3.-Sensor de temperatura y humedad :")
-        SensorTipo =  int(input("Elige una opcion: "))
-
-        if SensorTipo == 1:
-            tipSen="sensor_Distancia"
-        if SensorTipo == 2:
-            tipSen="sensor_Pir"
-        if SensorTipo == 3  :
-            tipSen="sensor_TempHum"
-
-        nombre_sensor=input("Ahora ingrese el nombre del sensor: ")
-
-        puertosNum = int(input("Cuantos puertos tiene? (Maximo 3) "))
-        if puertosNum==1:
-            puerto1=int(input("ingrese el puerto #1 "))
-            puertos={"Pin1":puerto1}
-        if puertosNum==2:
-            puerto1=int(input("ingrese el puerto #1 "))
-            puerto2=int(input("ingrese el puerto #2 "))
-            puertos={"Pin1":puerto1,"Pin2":puerto2}
-        if puertosNum==3:
-            puerto1=int(input("ingrese el puerto #1 "))
-            puerto2=int(input("ingrese el puerto #2 "))
-            puerto3=int(input("ingrese el puerto #3 "))
-            puertos={"Pin1":puerto1,"Pin2":puerto2,"Pin3":puerto3}
-
-        sentencia={nombre_sensor : puertos}
-        self.sensores[tipSen].update(sentencia)
-        
-        print("")
-        print("")
-        print("")
-        print(self.sensores)
 
 
     #imprimir nombres de sensores
@@ -83,17 +47,34 @@ class registro:
         for x in self.sensores[tipo_sensor]:
             print(" ")
             print(x)#este imprime el nombre del sensor
-
             #aqui se imprime los pines de los sensores
             if len(self.sensores[tipo_sensor][x]) == 1:
-                print(self.sensores[tipo_sensor][x]["Pin1"])
+                pin1=self.sensores[tipo_sensor][x]["Pin1"]
+                print(pin1)
+                pinEntrada={"Nombre":x,"Pin1":pin1}
             if len(self.sensores[tipo_sensor][x]) == 2:
-                print(self.sensores[tipo_sensor][x]["Pin1"])
-                print(self.sensores[tipo_sensor][x]["Pin2"])
+                pin1=self.sensores[tipo_sensor][x]["Pin1"]
+                pin2=self.sensores[tipo_sensor][x]["Pin2"]
+                print(pin1)
+                print(pin2)
+                pinEntrada={"Nombre":x,"Pin1":pin1, "Pin2":pin2}
             if len(self.sensores[tipo_sensor][x]) == 3:
-                print(self.sensores[tipo_sensor][x]["Pin1"])
-                print(self.sensores[tipo_sensor][x]["Pin2"])
-                print(self.sensores[tipo_sensor][x]["Pin3"])
+                pin1=self.sensores[tipo_sensor][x]["Pin1"]
+                pin2=self.sensores[tipo_sensor][x]["Pin2"]
+                pin3=self.sensores[tipo_sensor][x]["Pin3"]
+                print(pin1)
+                print(pin2)
+                print(pin3)
+                pinEntrada={"Nombre":x,"Pin1":pin1, "Pin2":pin2, "Pin1":pin3}
+            
+
+
+
+
+
+
+
+
 
 
     def menu(self):
@@ -120,9 +101,9 @@ class registro:
                 if valor==3:
                     tipo_sensor="sensor_TempHum"
 
-                print("1.- obtener sensores")
-                print("2.- obtener pines individual")
-                print("3.- obtener pines all")
+                print("1.- obtener sensores(solo nombre)")
+                print("2.- obtener pines individual(pines y nombre)")
+                print("3.- obtener pines all(solo pines)")
 
                 hacer=int(input("Ingrese que desea hacer"))
 
@@ -133,6 +114,15 @@ class registro:
                 if hacer==3:
                     self.getPinesAll(tipo_sensor)
             
+
+
+
+
+
+
+
+
+
 
 
 

@@ -7,6 +7,8 @@ import datetime
 class sensorTemperatura():
     def __init__(self,pinEntrada):
         self.tempHumedadEntrada=pinEntrada.get("TemperaturaHumedad")
+        self.Nombre=pinEntrada.get("Nombre")
+
         GPIO.cleanup()
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
@@ -35,13 +37,14 @@ class sensorTemperatura():
     def temperatura(self,tiempo,pinEntrada):
         try:
             while True:
-                temp=sensorTemperatura(pinEntrada)
-                resultTemp,resultHumed=temp.sensorTemp()
+#                temp=sensorTemperatura(pinEntrada)
+#                resultTemp,resultHumed=temp.sensorTemp()
+                resultTemp,resultHumed=self.sensorTemp()
 
                 dato = {"resultTemp": resultTemp, "resultHumed":resultHumed}
 
                 x=saveCSV()
-                x.insertSensorIndividual(dato,3)
+                x.insertSensorIndividual(dato,3,self.Nombre)
 
 
                 time.sleep(tiempo)

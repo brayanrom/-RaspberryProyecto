@@ -5,12 +5,6 @@ import os
 
 #este sensor usa 5V
 class SensorDistancia():
-    def limpiar(self):
-        if os.name=="nt":
-            os.system("cls")
-        else:
-            os.system("clear")
-
     def __init__(self,pinEntrada):
 
         GPIO.cleanup()
@@ -19,9 +13,16 @@ class SensorDistancia():
 
         self.GPIO_TRIGGER=pinEntrada.get("GPIO_TRIGGER")
         self.GPIO_ECHO=pinEntrada.get("GPIO_ECHO")
+        self.Nombre=pinEntrada.get("Nombre")
 
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)
+
+    def limpiar(self):
+        if os.name=="nt":
+            os.system("cls")
+        else:
+            os.system("clear")
 
     def distance(self):
         self.limpiar()
@@ -54,13 +55,16 @@ class SensorDistancia():
 
 
     def leerDistancia(self,tiempo,pinEntrada):
+#    def leerDistancia(self,tiempo,pinEntrada):
+
         try:
             while True:
-                dist=SensorDistancia(pinEntrada)
-                wardPir=dist.distance()
+#                dist=SensorDistancia(pinEntrada)
+#                wardPir=dist.distance()
+                wardPir=self.distance()
 
                 x=saveCSV()
-                x.insertSensorIndividual(str(wardPir),1)
+                x.insertSensorIndividual(str(wardPir),1,self.Nombre)
 
                 time.sleep(tiempo)
 
@@ -69,3 +73,4 @@ class SensorDistancia():
             self.limpiar()
             print("Proceso detenido por el usuario")
             GPIO.cleanup()
+

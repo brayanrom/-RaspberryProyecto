@@ -31,12 +31,15 @@ class saveCSV():
             self.guardarDatos(valores)
 
 
-    def insertSensorIndividual(self,dato,sensorTipo=0):
+    def insertSensorIndividual(self,dato,sensorTipo=0,nombreSensor="NULL"):
         datoNulo="NULL" 
 
         archivo = open("sensores.csv", "a")
-        #1 es distancia
+        archivo.write(nombreSensor)
 
+        
+        
+        #1 es distancia
         if sensorTipo==1:
             archivo.write(dato)
             archivo.write(", NULL,NULL, NULL")   

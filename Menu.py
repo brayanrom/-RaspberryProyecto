@@ -8,24 +8,160 @@ import time
 
 class Menus:
     def __init__(self):
-        print("Seleccione su tiempo a guardar datos")
-        self.tiempo=int(input())
-        self.limpiar()
+        self.sensores = {
+            "sensor_Distancia" : {
+                "dist1" : {
+                    "Pin1":3,
+                    "Pin2":4
+                }
+            },
+            "sensor_Pir" : {
+                "pir1" : {
+                    "Pin1":27
+                }
+            },
+            "sensor_TempHum" : {
+                "temhum1" : {
+                    "Pin1":23                
+                }
+            },
+            "sensor_Led" : {
+                "led1" : {
+                    "Pin1":2                
+                }
+            }
+        }
+
+        self.tiempoDatos()
 
         self.led=2
         self.pir=27
-        
         self.temperatura=23
-
         self.GPIO_TRIGGER=3
         self.GPIO_ECHO=4
 
+    def tiempoDatos(self)
+        print("Seleccione su tiempo a guardar datos")
+        self.tiempo=int(input())
+        self.limpiar()
 
     def limpiar(self):
         if os.name=="nt":
             os.system("cls")
         else:
             os.system("clear")
+
+
+
+
+#nuevo
+    def agregarSensor(self):
+        print("1.-Sensor de distancia: ")
+        print("2.-Sensor pir: ")
+        print("3.-Sensor de temperatura y humedad :")
+        SensorTipo =  int(input("Elige una opcion: "))
+
+        if SensorTipo == 1:
+            tipSen="sensor_Distancia"
+        if SensorTipo == 2:
+            tipSen="sensor_Pir"
+        if SensorTipo == 3  :
+            tipSen="sensor_TempHum"
+
+        nombre_sensor=input("Ahora ingrese el nombre del sensor: ")
+
+        puertosNum = int(input("Cuantos puertos tiene? (Maximo 3) "))
+        if puertosNum==1:
+            puerto1=int(input("ingrese el puerto #1 "))
+            puertos={"Pin1":puerto1}
+        if puertosNum==2:
+            puerto1=int(input("ingrese el puerto #1 "))
+            puerto2=int(input("ingrese el puerto #2 "))
+            puertos={"Pin1":puerto1,"Pin2":puerto2}
+        if puertosNum==3:
+            puerto1=int(input("ingrese el puerto #1 "))
+            puerto2=int(input("ingrese el puerto #2 "))
+            puerto3=int(input("ingrese el puerto #3 "))
+            puertos={"Pin1":puerto1,"Pin2":puerto2,"Pin3":puerto3}
+
+        sentencia={nombre_sensor : puertos}
+        self.sensores[tipSen].update(sentencia)
+        
+        print("")
+        print("")
+        print("")
+        print(self.sensores)
+
+
+
+    def pir(self):
+        for x in self.sensores["sensor_Pir"]:
+            print(" ")
+            print(x)#este imprime el nombre del sensor
+            #aqui se imprime los pines de los sensores
+            pin1=self.sensores["sensor_Pir"][x]["Pin1"]
+            print(pin1)
+            pinEntrada={"Nombre":x,"pir":pin1}
+            #pinEntrada={"led":self.led, "pir":self.pir}
+            x=sensorPir(pinEntrada)
+            x.leerMovimiento(self.tiempo,pinEntrada)
+            print("  ")
+            print("  ")
+
+    def ledMetodo(self):
+        for x in self.sensores["sensor_Led"]:
+            print(" ")
+            print(x)#este imprime el nombre del sensor
+            #aqui se imprime los pines de los sensores
+            pin1=self.sensores["sensor_Led"][x]["Pin1"]
+            print(pin1)
+            pinEntrada={"Nombre":x,"led":pin1}
+            
+            print("1.-Encender Led")
+            print("2.-Apagar Led")
+            print("3.-Led Loop")
+            print("  ")
+            print("  ")
+            led = ledConf(pinEntrada)
+            opc2 = input()
+                if opc2 == "1":
+                    led.ledOn()
+                if opc2 == "2":
+                    led.ledOff()
+                if opc2 == "3":
+                    led.ledLoop()
+
+    def distanciaMetodo(self):
+        self.limpiar()
+        for x in self.sensores["sensor_Distancia"]:
+            print(" ")
+            print(x)#este imprime el nombre del sensor
+            #aqui se imprime los pines de los sensores
+            pin1=self.sensores[tipo_sensor][x]["Pin1"]
+            pin2=self.sensores[tipo_sensor][x]["Pin2"]
+            print(pin1)
+            print(pin2)
+            pinEntrada={"Nombre":x,"GPIO_TRIGGER":pin1, "GPIO_ECHO":pin2}
+
+            distancia=SensorDistancia(pinEntrada)
+            distancia.leerDistancia(self.tiempo)
+            print("  ")
+            print("  ")
+
+    def tempHumedadMetodo(self):
+        for x in self.sensores["sensor_TempHum"]:
+            print(" ")
+            print(x)#este imprime el nombre del sensor
+            #aqui se imprime los pines de los sensores
+            pin1=self.sensores["sensor_TempHum"][x]["Pin1"]
+            print(pin1)
+            pinEntrada={"Nombre":x,"TemperaturaHumedad":pin1}
+
+            tempSens=sensorTemperatura(pinEntrada)
+            tempSens.temperatura(self.tiempo)
+            print("  ")
+            print("  ")
+
 
     def menuPR(self):
         try:
@@ -36,57 +172,25 @@ class Menus:
                 print("3.- Detectar presencia con sensor PIR")
                 print("4.- Temperatura y humedad")
                 print("5.- Leer todos los sensores")
-
                 print("10.- Configuracion")
                 print("  ")
                 print("  ")
-
                 opc = input()
-
+                if opc == "0":
+                    self.limpiar()
+                    self.agregarSensor()
                 if opc == "1":
-                    pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, "GPIO_ECHO":self.GPIO_ECHO}
-                    distancia=SensorDistancia(pinEntrada)
-                    distancia.leerDistancia(self.tiempo,pinEntrada)
-                    print("  ")
-                    print("  ")
-
-
+                    self.limpiar()
+                    self.distanciaMetodo()
                 if opc == "2":
                     self.limpiar()
-                    pinEntrada={"led":self.led}
-                    led = ledConf(pinEntrada)
-                    print("1.-Encender Led")
-                    print("2.-Apagar Led")
-                    print("3.-Led Loop")
-                    print("  ")
-                    print("  ")
-
-                    opc2 = input()
-                    if opc2 == "1":
-                        led.ledOn()
-                    if opc2 == "2":
-                        led.ledOff()
-                    if opc2 == "3":
-                        led.ledLoop()
-
-
+                    self.ledMetodo()
                 if opc == "3":
-                    pinEntrada={"led":self.led, "pir":self.pir}
-
-                    x=sensorPir(pinEntrada)
-                    x.leerMovimiento(self.tiempo,pinEntrada)
-                    print("  ")
-                    print("  ")
-
+                    self.limpiar()
+                    self.pir()
                 if opc == "4":
-                    pinEntrada={"TemperaturaHumedad":self.temperatura}
-                    
-                    tempSens=sensorTemperatura(pinEntrada)
-                    tempSens.temperatura(self.tiempo,pinEntrada)
-                    print("  ")
-                    print("  ")
-
-
+                    self.limpiar()
+                    self.tempHumedadMetodo()
 
                 if opc == "5":
                     try:
@@ -122,11 +226,6 @@ class Menus:
                         print("Proceso detenido por el usuario")
                         print("  ")
                         print("  ")
-
-
-
-
-
 
 
                 if opc == "10":
