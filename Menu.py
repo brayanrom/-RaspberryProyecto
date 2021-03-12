@@ -2,7 +2,8 @@ from Pir import sensorPir
 from led import ledConf
 from senDistancia import SensorDistancia
 from saveCSV import saveCSV
-from sensorTemperaturaHumedad import sensorTemperatura
+from sensorTemperatura import sensorTemperatura
+from sensorHumedad import sensorHumedad
 from mongodb import DatabaseMongoDB
 import os
 import time
@@ -13,23 +14,27 @@ class Menus:
     def __init__(self):
         self.sensores = {
             "sensor_Distancia" : {
-                6 : {
+                1 : {
                     "Pin1":3,
                     "Pin2":4
+                },
+                4 : {
+                    "Pin1":24,
+                    "Pin2":25
                 }
             },
             "sensor_Pir" : {
-                7 : {
+                2 : {
                     "Pin1":27
                 }
             },
             "sensor_TempHum" : {
-                8 : {
+                3 : {
                     "Pin1":23                
                 }
             },
             "sensor_Led" : {
-                9 : {
+                5 : {
                     "Pin1":2                
                 }
             }
@@ -97,14 +102,12 @@ class Menus:
         print("")
         print("")
         db = DatabaseSQLDB()
-        today = date.today()
-        ti = time.strftime("%H:%M:%S")
-        #time = time.strftime("%H:%M:%S")
-        fecha = str(today) + ' ' + str(ti)
+        
         tabla = "sensores_registrados"
-        valores = {"nombre":nombre_sensor, "tipo_id":SensorTipo, "fecha_tiempo":fecha}
-        db.insert(tabla, valores )
+        valores = {"nombre":nombre_sensor, "tipo_id":SensorTipo}
+        db.insert(tabla, valores)
         db.select(tabla)
+
 
     def pirMetodo(self):
         for x in self.sensores["sensor_Pir"]:
@@ -112,21 +115,21 @@ class Menus:
             pin1=self.sensores["sensor_Pir"][x]["Pin1"]
             
             #aqui se imprime los pines de los sensores
-            print("Nombre del sensor: "+str(x))#este imprime el nombre del sensor
+            print("Sensor Registrado: "+str(x))#este imprime el id del sensor
             #aqui se imprime los pines de los sensores
             print("Puerto#1: "+str(pin1))
             
-            pinEntrada={"Nombre":x,"pir":pin1}
+            pinEntrada={"id_sensor":x,"pir":pin1}
             #pinEntrada={"led":self.led, "pir":self.pir}
             x=sensorPir(pinEntrada)
-            x.leerMovimiento(self.tiempo,pinEntrada)
+            x.leerMovimiento(pinEntrada)
             print("  ")
             print("  ")
 
     def ledMetodo(self):
         for x in self.sensores["sensor_Led"]:
             print(" ")
-            print("Nombre del sensor: "+str(x))#este imprime el nombre del sensor
+            print("Sensor Registrado: "+str(x))#este imprime el id del sensor
             #aqui se imprime los pines de los sensores
             pin1=self.sensores["sensor_Led"][x]["Pin1"]
             print("Puerto#1: "+str(pin1))
@@ -153,32 +156,36 @@ class Menus:
             pin1=self.sensores["sensor_Distancia"][x]["Pin1"]
             pin2=self.sensores["sensor_Distancia"][x]["Pin2"]
 
-            #aqui se imprime los pines de los sensores
-            print("Nombre del sensor: "+str(x))#este imprime el nombre del sensor
+            print("Sensor Registrado: "+str(x))#este imprime el id del sensor
             #aqui se imprime los pines de los sensores
             print("Puerto#1: "+str(pin1))
             print("Puerto#2: "+str(pin2))
 
-            pinEntrada={"Nombre":x,"GPIO_TRIGGER":pin1, "GPIO_ECHO":pin2}
+            pinEntrada={"id_sensor":x,"GPIO_TRIGGER":pin1, "GPIO_ECHO":pin2}
+
             distancia=SensorDistancia(pinEntrada)
-            distancia.leerDistancia(self.tiempo)
+            distancia.leerDistancia()
+
             print("  ")
             print("  ")
-            self.limpiar()
 
     def tempHumedadMetodo(self):
         for x in self.sensores["sensor_TempHum"]:
             print(" ")
+
             pin1=self.sensores["sensor_TempHum"][x]["Pin1"]
             pinEntrada={"Id_sensor":x,"TemperaturaHumedad":pin1}
 
             #aqui se imprime los pines de los sensores
-            print("Nombre del sensor: "+str(x))#este imprime el nombre del sensor
+            print("Sensor Registrado: "+str(x))#este imprime el id del sensor
             #aqui se imprime los pines de los sensores
             print("Puerto#1: "+str(pin1))
 
             tempSens=sensorTemperatura(pinEntrada)
-            tempSens.temperatura(self.tiempo)
+            tempSens.temperatura()
+
+            humeSens=sensorHumedad(pinEntrada)
+            humeSens.humedad()
             print("  ")
             print("  ")
 
@@ -205,6 +212,7 @@ class Menus:
                         while True:
                             self.limpiar()
                             self.distanciaMetodo()
+                            time.sleep(self.tiempo)
                     # Reset by pressing CTRL + C
                     except KeyboardInterrupt:
                         self.limpiar()
@@ -220,6 +228,7 @@ class Menus:
                         while True:
                             self.limpiar()
                             self.pirMetodo()
+                            time.sleep(self.tiempo)
                     # Reset by pressing CTRL + C
                     except KeyboardInterrupt:
                         self.limpiar()
@@ -228,8 +237,9 @@ class Menus:
                 if opc == "4":
                     try:
                         while True:
-                            self.limpiar()
+                            #self.limpiar()
                             self.tempHumedadMetodo()
+                            time.sleep(self.tiempo)
                     # Reset by pressing CTRL + C
                     except KeyboardInterrupt:
                         self.limpiar()

@@ -6,13 +6,13 @@ import os
 #este sensor usa 5V
 class SensorDistancia():
     def __init__(self,pinEntrada):
-
+        GPIO.setwarnings(False)
         GPIO.cleanup()
         GPIO.setmode(GPIO.BCM)
 
         self.GPIO_TRIGGER=pinEntrada.get("GPIO_TRIGGER")
         self.GPIO_ECHO=pinEntrada.get("GPIO_ECHO")
-        self.Nombre=pinEntrada.get("Nombre")
+        self.id_sensor=pinEntrada.get("id_sensor")
 
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)
@@ -46,9 +46,8 @@ class SensorDistancia():
         return ditsFinal
 
 
-    def leerDistancia(self,tiempo):
-        wardDist=self.distance()
+    def leerDistancia(self):
+        dato=self.distance()
         x=saveCSV()
-        x.insertSensorIndividual(wardDist,6,self.Nombre)
+        x.insertSensorIndividual(dato,1,self.id_sensor)
 
-        time.sleep(tiempo)

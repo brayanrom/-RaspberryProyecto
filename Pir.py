@@ -1,43 +1,29 @@
 import RPi.GPIO as GPIO
 import time
-import os
 from saveCSV import saveCSV
 
 #este sensor usa 5V
 class sensorPir():
-    def __init__(self,pinEntrada):
-        
-        #ledEntrada=pinEntrada.get("led")
+    def __init__(self,pinEntrada):        
         self.pir=pinEntrada.get("pir")
-        self.Nombre=pinEntrada.get("Nombre")
-
-        GPIO.cleanup()
-        #self.led=ledEntrada
+        self.id_sensor=pinEntrada.get("id_sensor")
         GPIO.setwarnings(False)
+        GPIO.cleanup()
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pir, GPIO.IN)     
-        #GPIO.setup(self.led, GPIO.OUT) 
 
-    def limpiar(self):
-        if os.name=="nt":
-            os.system("cls")
-        else:
-            os.system("clear")
 
     def leerMov(self):
-        i=GPIO.input(self.pir)
-        if i==0:                 #When output from motion sensor is LOW
+        deteccionPir=GPIO.input(self.pir)
+        if deteccionPir==0:                
             print ("Movimiento No detectado")
-            #GPIO.output(self.led, 0)  #Turn OFF LED
-        elif i==1:               #When output from motion sensor is HIGH
+        elif deteccionPir==1:               
             print ("Movimiento detectado")
-            #GPIO.output(self.led, 1)  #Turn ON LED
-        return i
+        return deteccionPir
 
 
-    def leerMovimiento(self,tiempo,pinEntrada):
+    def leerMovimiento(self,pinEntrada):
         mov=sensorPir(pinEntrada)
         wardPir=mov.leerMov()
         x=saveCSV()
-        x.insertSensorIndividual(str(wardPir),7,self.Nombre)
-        time.sleep(tiempo)
+        x.insertSensorIndividual(wardPir,2,self.id_sensor)

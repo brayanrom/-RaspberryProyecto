@@ -3,7 +3,7 @@ from CheckTypeValues import CheckTypeValues
 from datetime import date
 import time
 
-ctv = CheckTypeValues()
+#ctv = CheckTypeValues()
 
 class DatabaseSQLDB:
 
@@ -22,6 +22,13 @@ class DatabaseSQLDB:
         for x in self.mycursor:
             print(x)
     
+
+
+
+
+
+
+
     def insert(self, tabla, valores):
         if tabla == "sensores_tipos":
             t = valores.get('tipo')
@@ -34,23 +41,36 @@ class DatabaseSQLDB:
             self.mydb.commit()
         elif tabla == "historial":
             s = valores.get('sensor_id')
-            val = valores.get('valor')
             fecha_tiempo = valores.get('fecha_tiempo')
-            if ctv.isInt(val):
-                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_int, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+            if valores.get('distancia'):
+                val = valores.get('distancia')
+                self.mycursor.execute('INSERT INTO %s (sensor_id, distancia, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
                 self.mydb.commit()
-            elif ctv.isFloat(val):
-                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_dec, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+            elif valores.get('pir'):
+                val = valores.get('pir')
+                self.mycursor.execute('INSERT INTO %s (sensor_id, pir, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
                 self.mydb.commit()
-            elif ctv.isString(val):
-                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_str, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+            elif valores.get('humedad'):
+                val = valores.get('humedad')
+                self.mycursor.execute('INSERT INTO %s (sensor_id, humedad, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
                 self.mydb.commit()
-            elif ctv.isNumericBool(val):
-                self.mycursor.execute('INSERT INTO %s (sensor_id, valor_bool, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+            elif valores.get('temperatura'):
+                val = valores.get('temperatura')
+                self.mycursor.execute('INSERT INTO %s (sensor_id, temperatura, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
                 self.mydb.commit()
             else:
-                print("El valor recibido no es valido")
-        
+                print("Valor no reibido")
+
+
+
+
+
+
+
+
+
+
+    
     def select(self, tabla):
         self.mycursor.execute('SELECT * FROM %s' % (tabla))
         myresult = self.mycursor.fetchall()

@@ -9,9 +9,9 @@ class saveCSV():
         #insercion de los datos en bucle
     def postPersona(self,dato1="NULL",dato2="NULL",dato3="NULL",dato4="NULL"):
 
-        archivo = open("sensores.csv", "a")
+        #archivo = open("sensores.csv", "a")
 
-        archivo.write(dato1)
+       ''' archivo.write(dato1)
         archivo.write(",")   
 
         archivo.write(dato2)
@@ -26,88 +26,61 @@ class saveCSV():
         archivo.close()
 
         valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
+'''
 
 
+    def insertSensorIndividual(self,dato,sensor_tipo,id_sensor):
 
-    def insertSensorIndividual(self,dato , Id_sensor, dato2 = None):
-        '''archivo = open("sensores.csv", "a")
+        #se configura la fecha para despues enviarla
+        today = date.today()
+        ti = time.strftime("%H:%M:%S")
+        fecha = str(today) + ' ' + str(ti)
+            
 
-        #imprime el tipo de sensor
-        archivo.write(str(sensorTipo))
-        archivo.write(",")'''
-        
+        #imprime la id del sensor
+        archivo = open("sensores.csv", "a")
+        archivo.write(str(id_sensor))
+        archivo.write(",")
 
-        if dato and dato2:
-            valores = {"sensor_id":Id_sensor, "valor":dato}
-            valores2 = {"sensor_id":Id_sensor, "valor":dato2}
-            self.guardarDatos(valores, valores2)
-        else:
-            valores = {"sensor_id":Id_sensor, "valor":dato}
-            self.guardarDatos(valores)
-        
-        
-        '''
-        # distancia
-        if Id_sensor==4:
-            archivo.write(dato)
-            archivo.write(", NULL,NULL, NULL") 
-            valores = {"sensor_id":Id_sensor, "valor":float(dato)}
-            self.guardarDatos(valores)
+        #1 distancia
+        if sensor_tipo==1:
+            archivo.write(str(dato))
+            archivo.write(", NULL, NULL, NULL") 
+            valores = {"sensor_id":id_sensor, "distancia":dato, "fecha_tiempo":fecha}
 
-        # pir
-        if Id_sensor==6:
-            archivo.write("NULL,")
-            archivo.write(dato)
-            archivo.write(",NULL,NULL")
-            valores = {"sensor_id":Id_sensor, "valor":int(dato)}
-            self.guardarDatos(valores)
+        #2 pir
+        if sensor_tipo==2:
+            archivo.write("NULL, ")
+            archivo.write(str(dato))
+            archivo.write(", NULL, NULL")
+            valores = {"sensor_id":id_sensor, "pir":dato, "fecha_tiempo":fecha}
 
         #3 temperatura
-        if Id_sensor == 3:
-            archivo.write("NULL,NULL,") 
+        if sensor_tipo==3:
+            archivo.write("NULL, NULL, ") 
             archivo.write(str(dato))
-            archivo.write(",NULL") 
-            valores = {"sensor_id":Id_sensor, "valor":float(dato)}
-            valores2 = {"sensor_id":Id_sensor, "valor":float(dato2)}
-            self.guardarDatos(valores, valores2)
+            archivo.write(", NULL") 
+            valores = {"sensor_id":id_sensor, "temperatura":dato, "fecha_tiempo":fecha}
 
         #4 humedad
-        if Id_sensor == 7:
-            archivo.write("NULL,NULL,NULL") 
+        if sensor_tipo == 4:
+            archivo.write("NULL, NULL, NULL, ") 
             archivo.write(str(dato))
-            valores = {"sensor_id":Id_sensor, "valor":dato}
-            self.guardarDatos(valores)
+            valores = {"sensor_id":id_sensor, "humedad":dato, "fecha_tiempo":fecha}
 
 
+  
+        self.guardarDatos(valores)
         archivo.write("\n")
-        archivo.close()'''
+        archivo.close()
 
 
-    
+
 #donde se guardaran los datos en las BD's
-    def guardarDatos(self,valores, valores2 = None):
-            sensorTipo=valores.get("sensor_id")
-            dato=valores.get("valor")
-
+    def guardarDatos(self,valores):
             db = DatabaseSQLDB()
-            today = date.today()
-            ti = time.strftime("%H:%M:%S")
-            fecha = str(today) + ' ' + str(ti)
+
             tabla = "historial"
 
-            valores = {"sensor_id":sensorTipo, "valor":dato, "fecha_tiempo":fecha}
-        
             db.insert(tabla, valores )
-            db.select(tabla)
 
-            if valores2:
-                sensorTipo_2 = valores2.get("sensor_id")
-                dato_2 = valores2.get("valor")
-                today = date.today()
-                ti = time.strftime("%H:%M:%S")
-                fecha = str(today) + ' ' + str(ti)
-                tabla = "historial"
-                valores_2 = {"sensor_id":sensorTipo_2, "valor":dato_2, "fecha_tiempo":fecha}
-        
-                db.insert(tabla, valores_2)
-                db.select(tabla)
