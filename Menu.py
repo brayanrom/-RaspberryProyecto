@@ -1,14 +1,14 @@
-from Pir import sensorPir
-from led import ledConf
-from senDistancia import SensorDistancia
+from sensorpir import sensorPir
+from sensorled import ledConf
+from sensordistancia import SensorDistancia
 from saveCSV import saveCSV
 from sensorTemperatura import sensorTemperatura
 from sensorHumedad import sensorHumedad
-from mongodb import DatabaseMongoDB
+from DBmongo import DatabaseMongoDB
 import os
 import time
 from datetime import date
-from sqldb import DatabaseSQLDB
+from DBsql import DatabaseSQLDB
 
 class Menus:
     def __init__(self):
@@ -57,9 +57,6 @@ class Menus:
             os.system("cls")
         else:
             os.system("clear")
-
-
-
 
 #nuevo
     def agregarSensor(self):

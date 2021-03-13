@@ -3,8 +3,6 @@ import dns
 from datetime import date
 import time
 
-
-
 class DatabaseMongoDB:
 
     def __init__(self):
@@ -26,8 +24,6 @@ class DatabaseMongoDB:
     def delete(self, col, dic):
         col = self.database[col]
         col.delete_one(dic)
-
-
 
 
 # ASI FUNCIONA PARA SACAR LA FECHA ACTUAL

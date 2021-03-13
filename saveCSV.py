@@ -1,9 +1,7 @@
-from sqldb import DatabaseSQLDB
-from mongodb import DatabaseMongoDB
-
+from DBsql import DatabaseSQLDB
+from DBmongo import DatabaseMongoDB
 import time
 from datetime import date
-from sqldb import DatabaseSQLDB
 
 class saveCSV():        
         #insercion de los datos en bucle
@@ -68,12 +66,9 @@ class saveCSV():
             archivo.write(str(dato))
             valores = {"sensor_id":id_sensor, "humedad":dato, "fecha_tiempo":fecha}
 
-
-  
         self.guardarDatos(valores)
         archivo.write("\n")
         archivo.close()
-
 
 
 #donde se guardaran los datos en las BD's

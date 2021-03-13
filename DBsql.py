@@ -23,53 +23,37 @@ class DatabaseSQLDB:
             print(x)
     
 
-
-
-
-
-
-
     def insert(self, tabla, valores):
         if tabla == "sensores_tipos":
-            t = valores.get('tipo')
-            self.mycursor.execute('INSERT INTO %s (tipo) values ("%s")' % (tabla, t))
+            typo = valores.get('tipo')
+            self.mycursor.execute('INSERT INTO %s (tipo) values ("%s")' % (tabla, typo))
             self.mydb.commit()
         elif tabla == "sensores_registrados":
-            n = valores.get('nombre')
+            nomb = valores.get('nombre')
             tipo_sensor = valores.get('tipo_id')
-            self.mycursor.execute('INSERT INTO %s (nombre, tipo_id) values ("%s", "%s")' % (tabla, n, tipo_sensor))
+            self.mycursor.execute('INSERT INTO %s (nombre, tipo_id) values ("%s", "%s")' % (tabla, nomb, tipo_sensor))
             self.mydb.commit()
         elif tabla == "historial":
-            s = valores.get('sensor_id')
+            ssensor = valores.get('sensor_id')
             fecha_tiempo = valores.get('fecha_tiempo')
             if valores.get('distancia'):
                 val = valores.get('distancia')
-                self.mycursor.execute('INSERT INTO %s (sensor_id, distancia, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mycursor.execute('INSERT INTO %s (sensor_id, distancia, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, ssensor, val, fecha_tiempo))
                 self.mydb.commit()
             elif valores.get('pir'):
                 val = valores.get('pir')
-                self.mycursor.execute('INSERT INTO %s (sensor_id, pir, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mycursor.execute('INSERT INTO %s (sensor_id, pir, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, ssensor, val, fecha_tiempo))
                 self.mydb.commit()
             elif valores.get('humedad'):
                 val = valores.get('humedad')
-                self.mycursor.execute('INSERT INTO %s (sensor_id, humedad, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mycursor.execute('INSERT INTO %s (sensor_id, humedad, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, ssensor, val, fecha_tiempo))
                 self.mydb.commit()
             elif valores.get('temperatura'):
                 val = valores.get('temperatura')
-                self.mycursor.execute('INSERT INTO %s (sensor_id, temperatura, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, s, val, fecha_tiempo))
+                self.mycursor.execute('INSERT INTO %s (sensor_id, temperatura, fecha_tiempo) VALUES ("%s", "%s", "%s")'% (tabla, ssensor, val, fecha_tiempo))
                 self.mydb.commit()
             else:
                 print("Valor no reibido")
-
-
-
-
-
-
-
-
-
-
     
     def select(self, tabla):
         self.mycursor.execute('SELECT * FROM %s' % (tabla))
@@ -84,9 +68,6 @@ class DatabaseSQLDB:
         self. mycursor.execute('DELETE FROM %s where %s = "%s"' % (tabla, columna , valor))
         self.mydb.commit()     
         
-
-
-
 
 ''' EJEMPLO DE INSERCION
 db = DatabaseSQLDB()
@@ -104,9 +85,6 @@ valores = {"sensor_id":1, "valor":1, "fecha_tiempo":fecha}
 
 db.insert(tabla, valores)
 db.select(tabla) '''
-
-
-
 
 # ASI FUNCIONA PARA SACAR LA FECHA ACTUAL
 # today = date.today()
