@@ -4,39 +4,15 @@ import time
 from datetime import date
 
 class saveCSV():        
-        #insercion de los datos en bucle
-    def postPersona(self,dato1="NULL",dato2="NULL",dato3="NULL",dato4="NULL"):
-
-        #archivo = open("sensores.csv", "a")
-
-       ''' archivo.write(dato1)
-        archivo.write(",")   
-
-        archivo.write(dato2)
-        archivo.write(",")  
-
-        archivo.write(dato3)
-        archivo.write(",")  
-
-        archivo.write(dato4)
-
-        archivo.write("\n")
-        archivo.close()
-
-        valores = {"temperatura": dato3, "humedad":dato4, "pir":dato2, "distancia":dato1}
-'''
-
-
     def insertSensorIndividual(self,dato,sensor_tipo,id_sensor):
 
         #se configura la fecha para despues enviarla
         today = date.today()
         ti = time.strftime("%H:%M:%S")
         fecha = str(today) + ' ' + str(ti)
-            
 
         #imprime la id del sensor
-        archivo = open("sensores.csv", "a")
+        archivo = open("sensoresHistorial.csv", "a")
         archivo.write(str(id_sensor))
         archivo.write(",")
 
@@ -73,9 +49,11 @@ class saveCSV():
 
 #donde se guardaran los datos en las BD's
     def guardarDatos(self,valores):
-            db = DatabaseSQLDB()
 
+            dbMysql = DatabaseSQLDB()
+            dbMongo = DatabaseMongoDB()
             tabla = "historial"
-
-            db.insert(tabla, valores )
+            
+            dbMysql.insert(tabla, valores )
+            dbMongo.insert(tabla, valores )
 

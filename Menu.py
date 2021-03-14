@@ -195,7 +195,6 @@ class Menus:
                 print("2.- Enceder y Apagar Led's")
                 print("3.- Detectar presencia con sensor PIR")
                 print("4.- Temperatura y humedad")
-                print("5.- Leer todos los sensores")
                 print("10.- Configuracion")
                 print("  ")
                 print("  ")
@@ -242,41 +241,6 @@ class Menus:
                         self.limpiar()
                         print("Proceso detenido por el usuario")
                         print(" ")
-                if opc == "5":
-                    try:
-                        while True:
-
-                            pinEntrada={"GPIO_TRIGGER":self.GPIO_TRIGGER, 
-                            "GPIO_ECHO":self.GPIO_ECHO,
-                            "led":self.led, 
-                            "pir":self.pir,
-                            "TemperaturaHumedad":self.temperatura}
-                            
-
-                            distancia=SensorDistancia(pinEntrada)
-                            wardDist=distancia.distance()
-
-                            pir=sensorPir(pinEntrada)
-                            wardPir=pir.leerMov()
-
-                            temp=sensorTemperatura(pinEntrada)
-                            wardTemp,wardHumed=temp.sensorTemp()
-
-
-                            x=saveCSV()
-                            x.postPersona(str(wardDist),str(wardPir),str(wardTemp),str(wardHumed))
-
-
-                            time.sleep(self.tiempo)
-                            self.limpiar()
-
-                    # Reset by pressing CTRL + C
-                    except KeyboardInterrupt:
-                        self.limpiar()
-                        print("Proceso detenido por el usuario")
-                        print("  ")
-                        print("  ")
-
 
                 if opc == "10":
                     self.limpiar()

@@ -1,5 +1,4 @@
 import mysql.connector as mysql
-from CheckTypeValues import CheckTypeValues
 from datetime import date
 import time
 
